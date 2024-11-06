@@ -82,12 +82,10 @@ func (n *Notifier) Notify(ctx context.Context, alerts ...*types.Alert) (bool, er
 
 	groupKey, err := notify.ExtractGroupKey(ctx)
 	if err != nil {
-		// @tjhop: should we `return false, err` here as we do in most
-		// other Notify() implementations?
-		n.logger.Error("error extracting group key", "err", err)
+		return false, err
 	}
 
-	// @tjhop: should we debug log the key here like most other Notify() implementations?
+	n.logger.Debug("extracted group key", "incident", groupKey)
 
 	msg := &Message{
 		Version:         "4",
